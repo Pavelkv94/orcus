@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-
 import 'antd/dist/antd.css';
-import { HashRouter, Route, withRouter, Switch, NavLink, BrowserRouter } from 'react-router-dom';
+import { HashRouter, Route, withRouter, Switch, NavLink, BrowserRouter, useParams } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import { state } from './state';
+import { v1 } from 'uuid';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -13,61 +14,85 @@ const { Header, Content, Sider } = Layout;
 function App() {
 
   return (
-<HashRouter>
-    <Layout>
-      <Header className="header">
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-          <Menu.Item key="1">nav 1</Menu.Item>
-          <Menu.Item key="2">nav 2</Menu.Item>
-          <Menu.Item key="3">nav 3</Menu.Item>
-        </Menu>
-      </Header>
+    <HashRouter>
       <Layout>
-        <Sider width={200} className="site-layout-background"  >
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%', borderRight: 0 }}
-          >
-            <SubMenu key="sub1" title="subnav 1">
-              <Menu.Item key="1">option1</Menu.Item>
-              <Menu.Item key="2">option2</Menu.Item>
-              <Menu.Item key="3">option3</Menu.Item>
-              <Menu.Item key="4">option4</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-              <Menu.Item key="5">option5</Menu.Item>
-              <Menu.Item key="6">option6</Menu.Item>
-              <Menu.Item key="7">option7</Menu.Item>
-              <Menu.Item key="8">option8</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-              <Menu.Item key="9">option9</Menu.Item>
-              <Menu.Item key="10">option10</Menu.Item>
-              <Menu.Item key="11">option11</Menu.Item>
-              <Menu.Item key="12">option12</Menu.Item>
-            </SubMenu>
-          </Menu>
-        </Sider>
-        <Layout style={{ padding: '0 24px 24px' }}>
 
-          <Content
-            className="site-layout-background"
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-            }}
-          >
-            Content
-          </Content>
+        <Header className="header">
+
+          <HeaderNavBar />
+        </Header>
+        <Layout >
+          <Sider width={200} className="site-layout-background"  >
+            <Switch>
+              <Route exact path="/:catg/:slug?" render={() => <MenuBar />
+              } />
+            </Switch>
+
+          </Sider>
+          <Layout style={{ padding: '0 24px 24px' }}>
+
+            <Content
+              className="site-layout-background"
+              style={{
+                padding: 24,
+                margin: 0,
+                minHeight: 280,
+              }}
+            >
+              <Switch>
+                <Route exact path="/:catg/:slug" render={() => <Article />
+                } />
+              </Switch>
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
     </HashRouter>
   );
 }
 
 export default App;
+
+
+function MenuBar() {
+  const { catg } = useParams<{ catg: string }>();
+  console.log(`CATEGORY ITEM--> ${catg} `)
+  let count:number | null = 0;
+  switch (catg) {
+    case "Linux": count = 0; break;
+    case "Windows": count = 1; break;
+    case "admin":  count = null; break;
+    default: count = 0
+  }
+
+  return (
+    <Menu
+      theme="light"
+      mode="inline"
+      defaultSelectedKeys={['1']}
+
+      style={count !== null ?{ height: '100%', borderRight: 0 }: {display:"none"}}
+    >
+
+      {count !== null && state[count].articles.map(p => <Menu.Item key={v1()} ><NavLink to={{ pathname: `/${catg}/${p.shotTitle}` }} >{p.shotTitle}</NavLink></Menu.Item>)}
+
+
+    </Menu>
+  )
+}
+function HeaderNavBar() {
+  return (
+    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+     
+      {state.map(w => <Menu.Item key={w.id} ><NavLink to={{ pathname: `/${w.title}` }} >{w.title}</NavLink></Menu.Item>)}
+      <Menu.Item key={v1()} > <NavLink to={{ pathname: `/admin` }} > ADMIN</NavLink></Menu.Item>
+    </Menu>
+  )
+}
+function Article() {
+  const { slug, catg } = useParams<{ catg: string, slug: string }>();
+  console.log(`CATEGORY--> ${catg} SLUG-->${slug}`)
+  return (
+    <>{slug}</>
+  )
+}
