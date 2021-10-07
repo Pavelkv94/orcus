@@ -3,7 +3,7 @@ import { state } from '../../state';
 import { NavLink } from 'react-router-dom';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import { v1 } from 'uuid';
-
+import s from "./MenuBar.module.css"
 
 
 export function MenuBar() {
@@ -19,7 +19,8 @@ export function MenuBar() {
   
     return (
       <Menu
-        theme="light"
+      className = {s.menuLeft}
+        theme="dark"
         mode="inline"
         defaultSelectedKeys={['1']}
   

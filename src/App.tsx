@@ -22,8 +22,8 @@ function App() {
         <Header>
           <HeaderNavBar />
         </Header>
-        <Layout >
-          <Sider width={200} className="site-layout-background"  >
+        <Layout  className = {s.block}>
+          <Sider width={200} className="site-layout-background" >
             <Switch>
               <Route exact path="/:catg/:slug?" render={() => <MenuBar />
               } />

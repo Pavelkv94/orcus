@@ -5,6 +5,3 @@
   display: flex;
   flex-direction: column;
 }
-.postList {
-    border: 1px solid blue;
-}
