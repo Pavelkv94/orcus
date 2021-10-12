@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
 import s from './App.module.css';
 import 'antd/dist/antd.css';
-import { HashRouter, Route, withRouter, Switch, NavLink, BrowserRouter, useParams } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import { state } from './state';
-import { v1 } from 'uuid';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import { Layout} from 'antd';
 import { HeaderNavBar } from './components/HeaderNavBar/HeaderNavBar';
 import { MenuBar } from './components/MenuBar/MenuBar';
 import { MainWindow } from './components/MainWindow/MainWindow';
 
-const { SubMenu } = Menu;
+
 const { Header, Content, Sider } = Layout;
 
 
