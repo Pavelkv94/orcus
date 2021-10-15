@@ -16,7 +16,7 @@ export function MenuBar() {
 
 	return (
 		<div>
-			<NavLink to={{ pathname: `/admin` }} ><Button shape='circle' size='large' style={{ marginLeft: '20px' }} icon={<RadarChartOutlined />}></Button></NavLink>
+			<NavLink to={{ pathname: `/admin` }} ><Button shape='circle' size='large' style={{ margin: '10px 80px' }} icon={<RadarChartOutlined />}></Button></NavLink>
 			<Menu
 				className={s.menuLeft}
 				theme="dark"

@@ -107,7 +107,9 @@ export function AdminForm() {
 					</div>
 				</div>
 			</div>
+			
 			<a href="https://stackedit.io/app#" target="_blank">MarkDown Editor</a>
+			
 			<div className={s.createArea}>
 				<ReactMde
 					minEditorHeight={500}
