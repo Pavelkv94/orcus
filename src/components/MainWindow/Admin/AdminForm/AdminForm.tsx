@@ -1,14 +1,14 @@
 import s from "./AdminForm.module.css"
 import { Input, Button, Select, Result } from 'antd';
 import ReactMde from "react-mde";
-// import { useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Suggestion } from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
-import { catAPI } from './../../../../api/api'
+import { API } from './../../../../api/api'
 import { useDispatch, useSelector } from "react-redux";
-import { getThunk } from "../../../../redux/categoriesReducer";
+import { AppStateType } from "../../../../redux/store";
+import { createPostsTC } from "../../../../redux/postsReducer";
 
 const { Option } = Select;
 const loadSuggestions = async (text: string) => {
@@ -45,17 +45,28 @@ const converter = new Showdown.Converter({
 });
 
 export function AdminForm() {
-	// const { slug, catg } = useParams<{ catg: string, slug: string }>();
-	const [text, setText] = useState("**Hello world!!!**");
-	const [selectedTab, setSelectedTab] = useState<any>("write");
+	const categories = useSelector<AppStateType, Array<any>>(state => state.categories);
+	const dispatch = useDispatch();
 
+	const [slug, setSlug] = useState<string>("");
+	const [title, setTitle] = useState<string>("");
+	const [dropValue, setDropValue] = useState("");
+	const [text, setText] = useState<string>("");
 
+	const [selectedTab, setSelectedTab] = useState<"write" | "preview" | undefined>("write");
+	const [newCategory, setNewCategory] = useState<string>("");
+	const [isSuccess, setSuccess] = useState<boolean>(false);
 
-	const [cat, setCat] = useState("");
-	const addCat = () => {
-		catAPI.createCat(cat)
-		setCat('')
+	if (isSuccess === true) { setTimeout(() => { setSuccess(false) }, 5000) }
+	function handleChange(value: any) {
+		setDropValue(value)
 	}
+
+	const addCategory = () => {
+		API.createCategory(newCategory)
+		setNewCategory('')
+	}
+
 	return (
 		<div className={s.form}>
 			<div className={s.fields}>
@@ -65,25 +76,20 @@ export function AdminForm() {
 						type="text"
 						name="slug"
 						autoComplete="off"
-						value={1}
-						onChange={(e) => { }}
+						value={slug}
+						onChange={(e) => { setSlug(e.currentTarget.value) }}
 					/>
 					<label htmlFor="title">Title: </label>
 					<Input
 						type="text"
 						name="title"
 						autoComplete="off"
-						value={1}
-						onChange={(e) => { }}
+						value={title}
+						onChange={(e) => { setTitle(e.currentTarget.value) }}
 					/>
 					<label htmlFor="dropdown">Categories:</label>
-					<Select defaultValue="lucy" style={{ width: 380 }} onChange={() => { }}>
-						<Option value="jack">Jack</Option>
-						<Option value="lucy">Lucy</Option>
-						<Option value="disabled" disabled>
-							Disabled
-						</Option>
-						<Option value="Yiminghe">yiminghe</Option>
+					<Select style={{ width: 380 }} onChange={handleChange} value={dropValue}>
+						{categories.map(c => <Option key={c._id} value={c.title}>{c.title}</Option>)}
 					</Select>
 				</div>
 				<div className={s.categoryFields}>
@@ -94,13 +100,14 @@ export function AdminForm() {
 							type="text"
 							name="category"
 							autoComplete="off"
-							value={cat}
-							onChange={(e) => { setCat(e.currentTarget.value) }}
+							value={newCategory}
+							onChange={(e) => { setNewCategory(e.currentTarget.value) }}
 						/>
-						<Button type="dashed" onClick={addCat}>ADD</Button>
+						<Button type="dashed" onClick={addCategory} disabled={newCategory ? false : true}>ADD</Button>
 					</div>
 				</div>
 			</div>
+			<a href="https://stackedit.io/app#" target="_blank">MarkDown Editor</a>
 			<div className={s.createArea}>
 				<ReactMde
 					minEditorHeight={500}
@@ -121,11 +128,16 @@ export function AdminForm() {
 				/>
 			</div>
 			<div className={s.btn}>
-				<Button type="primary" size="large">CREATE NEW POST</Button>
+				<Button
+					type="primary"
+					size="large"
+					onClick={() => { dispatch(createPostsTC(title, slug, dropValue, text)); setSuccess(true); setSlug(""); setTitle(""); setDropValue(""); setText("") }}
+					disabled={slug === "" || title === "" || dropValue === "" || text === "" ? true : false}
+				>CREATE NEW POST</Button>
 			</div>
-
-			<Result status="success"
-				title="Successfully Purchased Cloud Server ECS!" />
+			{isSuccess && <Result status="success"
+				title="Post Is Created!!!" />}
+			<hr />
 		</div>
 	)
 }

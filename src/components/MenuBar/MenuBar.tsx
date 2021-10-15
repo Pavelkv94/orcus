@@ -1,35 +1,33 @@
 import { useParams } from "react-router";
-import { state } from '../../state';
 import { NavLink } from 'react-router-dom';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Menu, Button } from 'antd';
 import { v1 } from 'uuid';
 import s from "./MenuBar.module.css"
-
+import { RadarChartOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { AppStateType } from "../../redux/store";
+import { PostType } from "../../redux/postsReducer";
+import SubMenu from "antd/lib/menu/SubMenu";
 
 export function MenuBar() {
-    const { catg } = useParams<{ catg: string }>();
-    // console.log(`CATEGORY ITEM--> ${catg} `)
-    let count: number | null = 0;
-    switch (catg) {
-      case "Linux": count = 0; break;
-      case "Windows": count = 1; break;
-      case "admin": count = null; break;
-      default: count = 0
-    }
-  
-    return (
-      <Menu
-      className = {s.menuLeft}
-        theme="dark"
-        mode="inline"
-        defaultSelectedKeys={['1']}
-  
-        style={count !== null ? { height: '100%', borderRight: 0 } : { display: "none" }}
-      >
-  
-        {count !== null && state[count].articles.map(p => <Menu.Item key={v1()} ><NavLink to={{ pathname: `/${catg}/${p.shotTitle}` }} >{p.shotTitle}</NavLink></Menu.Item>)}
-  
-  
-      </Menu>
-    )
-  }
+	const { catg } = useParams<{ catg: string }>();
+	const posts = useSelector<AppStateType, Array<PostType>>(state => state.posts);
+	const filterData = posts.filter((p: PostType) => p.category === catg).sort((a, b) => a.title > b.title ? 1 : -1)
+
+	return (
+		<div>
+			<NavLink to={{ pathname: `/admin` }} ><Button shape='circle' size='large' style={{ marginLeft: '20px' }} icon={<RadarChartOutlined />}></Button></NavLink>
+			<Menu
+				className={s.menuLeft}
+				theme="dark"
+				mode="inline"
+				defaultSelectedKeys={['1']}
+				style={filterData.length !== null ? { height: '100%', borderRight: 0 } : { display: "none" }}
+			>
+				<SubMenu title={catg}>
+					{filterData.length !== null && filterData.map((p: PostType) => <Menu.Item key={p._id} ><NavLink to={{ pathname: `/${catg}/${p.slug}` }} >{p.title}</NavLink></Menu.Item>)}
+				</SubMenu>
+			</Menu>
+		</div>
+	)
+}

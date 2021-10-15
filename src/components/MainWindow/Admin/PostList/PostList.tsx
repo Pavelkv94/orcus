@@ -1,27 +1,22 @@
 import s from "./PostList.module.css"
 import { List, Card } from 'antd';
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getThunk } from "../../../../redux/categoriesReducer";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export function PostList() {
-	const dispatch = useDispatch();
-	useEffect(() => {
-		dispatch(getThunk())
-	}, [])
-	// const data = [{title:"123"}, {title:"123"}, {title:"123"}, {title:"123"}, ]
-	const data: any = useSelector<any>(state => state.categories)
 
-	console.log(data)
+	const posts: any = useSelector<any>(state => state.posts)
+	const reversedData = [...posts].reverse();
 
 	return (
 		<div className={s.postList}>
 			<List
-				grid={{ gutter: 16, column: 4 }}
-				dataSource={data}
+				grid={{ gutter: 20, column: 3 }}
+				dataSource={reversedData}
+
 				renderItem={(item: any) => (
-					<List.Item>
-						<Card title={item.title}>Card content</Card>
+					<List.Item style={{ boxShadow: "10px 10px 10px gray" }}>
+						<Link to={`/${item.category}/${item.slug}`}><Card title={item.title} style={{ height: "400px", overflow: "hidden" }}>{item.text}</Card></Link>
 					</List.Item>
 				)}
 			/>,

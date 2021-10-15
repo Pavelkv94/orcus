@@ -1,17 +1,17 @@
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { state } from '../../state';
-import { v1 } from 'uuid';
+import { Menu } from 'antd';
 import { NavLink } from 'react-router-dom';
-
-
-
+import { useSelector } from 'react-redux';
+import { AppStateType } from '../../redux/store';
+import { CategoryType } from '../../redux/categoriesReducer';
 
 export function HeaderNavBar() {
-    return (
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-  
-        {state.map(w => <Menu.Item key={w.id} ><NavLink to={{ pathname: `/${w.title}` }} >{w.title}</NavLink></Menu.Item>)}
-        <Menu.Item key={v1()} > <NavLink to={{ pathname: `/admin` }} > ADMIN</NavLink></Menu.Item>
-      </Menu>
-    )
-  }
+	const categories = useSelector<AppStateType, Array<CategoryType>>(state => state.categories);
+
+	return (
+		<div>
+			<Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} className='menu' >
+				{categories.map(w => <Menu.Item key={w._id} ><NavLink to={{ pathname: `/${w.title}` }} >{w.title}</NavLink></Menu.Item>)}
+			</Menu>
+		</div>
+	)
+}

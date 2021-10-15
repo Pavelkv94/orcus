@@ -5,12 +5,25 @@ import { Layout} from 'antd';
 import { HeaderNavBar } from './components/HeaderNavBar/HeaderNavBar';
 import { MenuBar } from './components/MenuBar/MenuBar';
 import { MainWindow } from './components/MainWindow/MainWindow';
+import { useEffect } from 'react';
+import { getCategoriesTC } from './redux/categoriesReducer';
+import { useDispatch } from 'react-redux';
+import { getPostsTC } from './redux/postsReducer';
 
 
 const { Header, Content, Sider } = Layout;
 
 
 function App() {
+	
+	const dispatch = useDispatch();
+	
+	useEffect(() => {
+		dispatch(getCategoriesTC())
+	}, [dispatch]);
+	useEffect(() => {
+		dispatch(getPostsTC())
+	}, [dispatch]);
 
   return (
     <HashRouter>

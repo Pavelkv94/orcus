@@ -3,14 +3,20 @@ import axios from 'axios'
 let h = new Headers();
 h.append("Content-Type", "application/json");
 const instance = axios.create({
-    baseURL: "http://localhost:3002",
+	baseURL: "http://localhost:3002",
 });
 
-export const catAPI = {
-	createCat(title:any){
-		return instance.post('/categories', {title : title})
+export const API = {
+	createCategory(title: any) {
+		return instance.post('/categories', { title: title })
 	},
-	getCat(){
+	getCategories() {
 		return instance.get('/categories')
 	},
+	createPost(title: string, slug: string, category: string, text: string ) {
+		return instance.post('/posts', { title, slug, category, text })
+	},
+	getPosts() {
+		return instance.get('/posts')
+	}
 }

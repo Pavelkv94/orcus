@@ -1,41 +1,50 @@
+import { API } from '../api/api';
+import { setAppStatusAC } from './appReducer';
+export type PostType = {
+	_id: string
+	title: string
+	slug: string
+	text: string
+	category: string
+	__v: number
+}
 type ActionType = any
-const initialState:any = []
+const initialState = [] as Array<PostType>
 export type InitialStateType = typeof initialState
 export function postsReducer(state: InitialStateType = initialState, action: ActionType): InitialStateType {
-    // console.log(action)
-    switch (action.type) {
-        case "INC-COUNTER-VALUE":
-            return []
-        
-        default: return state
-    }
+
+	switch (action.type) {
+		case "SET-POSTS":
+			return action.posts
+
+		default: return state
+	}
 }
 
-export function incCounterValueAC() {
-    return {
-        type: "INC-COUNTER-VALUE"
-    } as const
+export function setPostsAC(posts: any) {
+	return {
+		type: "SET-POSTS",
+		posts
+	} as const
 }
 
-export function resetCounterValueAC() {
-    return {
-        type: "RESET-COUNTER-VALUE"
-    } as const
+export const getPostsTC = () => (dispatch: any) => {
+	dispatch(setAppStatusAC('loading'))
+	API.getPosts()
+		.then(res => {
+			const posts = res.data;
+			dispatch(setPostsAC(posts))
+			dispatch(setAppStatusAC('succeeded'))
+		})
+		.catch(err => console.log(err))
 }
-export function maxValueAC(maxValue: number) {
-    return {
-        type: "MAX-COUNTER-VALUE",
-        maxValue,
-    } as const
-}
-export function startValueAC(startValue: number) {
-    return {
-        type: "START-COUNTER-VALUE",
-        startValue,
-    } as const
-}
-export function setValueAC() {
-    return {
-        type: "SET-COUNTER-VALUE",
-    } as const
+
+export const createPostsTC = (slug: string, title: string, category: string, text: string) => (dispatch: any) => {
+	dispatch(setAppStatusAC('loading'))
+	API.createPost(slug, title, category, text)
+		.then(res => {
+			dispatch(setAppStatusAC('succeeded'))
+
+		})
+		.catch(err => console.log(err))
 }

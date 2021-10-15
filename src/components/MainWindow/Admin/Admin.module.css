@@ -1,7 +1,6 @@
 .adminContainer {
   max-width: 1200px;
   margin: 0 auto;
-  border: 1px solid red;
   display: flex;
   flex-direction: column;
 }
