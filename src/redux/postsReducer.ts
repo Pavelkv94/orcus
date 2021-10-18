@@ -16,7 +16,6 @@ export function postsReducer(state: InitialStateType = initialState, action: Act
 	switch (action.type) {
 		case "SET-POSTS":
 			return action.posts
-
 		default: return state
 	}
 }

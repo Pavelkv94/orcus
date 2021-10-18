@@ -1,18 +1,19 @@
-import { useParams } from "react-router";
 import { NavLink } from 'react-router-dom';
 import { Menu, Button } from 'antd';
-import { v1 } from 'uuid';
 import s from "./MenuBar.module.css"
-import { RadarChartOutlined } from '@ant-design/icons';
+import { DingtalkOutlined, RadarChartOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { AppStateType } from "../../redux/store";
 import { PostType } from "../../redux/postsReducer";
 import SubMenu from "antd/lib/menu/SubMenu";
+import { v1 } from "uuid";
+import { useDispatch } from 'react-redux';
+import { getPostTC } from '../../redux/filterReducer';
+import React from 'react';
 
-export function MenuBar() {
-	const { catg } = useParams<{ catg: string }>();
-	const posts = useSelector<AppStateType, Array<PostType>>(state => state.posts);
-	const filterData = posts.filter((p: PostType) => p.category === catg).sort((a, b) => a.title > b.title ? 1 : -1)
+export const MenuBar = React.memo(() => {
+	const dispatch = useDispatch();
+	const posts = useSelector<AppStateType, Array<PostType>>(state => state.filter.filterPosts);
 
 	return (
 		<div>
@@ -22,12 +23,12 @@ export function MenuBar() {
 				theme="dark"
 				mode="inline"
 				defaultSelectedKeys={['1']}
-				style={filterData.length !== null ? { height: '100%', borderRight: 0 } : { display: "none" }}
+				style={posts.length !== null ? { height: '100%', borderRight: 0 } : { display: "none" }}
 			>
-				<SubMenu title={catg}>
-					{filterData.length !== null && filterData.map((p: PostType) => <Menu.Item key={p._id} ><NavLink to={{ pathname: `/${catg}/${p.slug}` }} >{p.title}</NavLink></Menu.Item>)}
+				<SubMenu key={v1()} icon={<DingtalkOutlined />} title={posts[0]?.category}>
+					{posts.length !== null && posts.map((p: PostType) => <Menu.Item key={p._id} onClick={() => dispatch(getPostTC(p._id))}><NavLink to={`/main/${p._id}`}> {p.title}</NavLink></Menu.Item>)}
 				</SubMenu>
 			</Menu>
 		</div>
 	)
-}
+})

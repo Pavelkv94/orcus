@@ -1,7 +1,7 @@
 import s from "./AdminForm.module.css"
 import { Input, Button, Select, Result } from 'antd';
 import ReactMde from "react-mde";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Suggestion } from "react-mde";
 import * as Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
@@ -44,7 +44,7 @@ const converter = new Showdown.Converter({
 	tasklists: true
 });
 
-export function AdminForm() {
+export const AdminForm = React.memo(() => {
 	const categories = useSelector<AppStateType, Array<any>>(state => state.categories);
 	const dispatch = useDispatch();
 
@@ -107,9 +107,9 @@ export function AdminForm() {
 					</div>
 				</div>
 			</div>
-			
-			<a href="https://stackedit.io/app#" target="_blank">MarkDown Editor</a>
-			
+
+			<a href="https://stackedit.io/app#" target="_blank" rel="noreferrer">MarkDown Editor</a>
+
 			<div className={s.createArea}>
 				<ReactMde
 					minEditorHeight={500}
@@ -142,4 +142,4 @@ export function AdminForm() {
 			<hr />
 		</div>
 	)
-}
+})

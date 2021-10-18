@@ -2,8 +2,9 @@ import s from "./PostList.module.css"
 import { List, Card } from 'antd';
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import React from "react";
 
-export function PostList() {
+export const PostList = React.memo(() => {
 
 	const posts: any = useSelector<any>(state => state.posts)
 	const reversedData = [...posts].reverse();
@@ -22,4 +23,4 @@ export function PostList() {
 			/>,
 		</div>
 	)
-}
+})

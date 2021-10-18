@@ -16,7 +16,7 @@ export function categoriesReducer(state: InitialStateType = initialState, action
 	switch (action.type) {
 		case "SET-CATEGORIES":
 			return action.categories
-		case "Add-CATEGORIES":
+		case "ADD-CATEGORIES":
 			return [...state, action.category]
 		default: return state
 	}
@@ -30,13 +30,13 @@ export function setCategoriesAC(categories: any) {
 }
 export function addCategoriesAC(category: CategoryType) {
 	return {
-		type: "Add-CATEGORIES",
+		type: "ADD-CATEGORIES",
 		category
 	} as const
 }
 
 export const getCategoriesTC = () => (dispatch: any) => {
-	dispatch(setAppStatusAC('loading'))
+	// dispatch(setAppStatusAC('loading'))
 	API.getCategories()
 		.then(res => {
 			const categories = res.data;

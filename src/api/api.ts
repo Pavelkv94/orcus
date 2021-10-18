@@ -18,5 +18,11 @@ export const API = {
 	},
 	getPosts() {
 		return instance.get('/posts')
-	}
+	},
+	getFilterPosts(category:string) {
+		return instance.get(`/posts/${category}`)
+	},
+	getPost(id:string) {
+		return instance.get(`main/${id}`)
+	},
 }
