@@ -1,4 +1,4 @@
-import s from './App.module.css';
+import './App.module.css';
 import 'antd/dist/antd.css';
 import { Route, Switch } from 'react-router-dom';
 import { Empty, Layout } from 'antd';
@@ -11,11 +11,13 @@ import { useDispatch } from 'react-redux';
 import { Login } from './components/Login/Login';
 import { Admin } from './components/MainWindow/Admin/Admin';
 import { getPostsTC } from './redux/postsReducer';
+import { useState } from 'react';
 const { Header, Content, Sider } = Layout;
 
 
 function App() {
 	const dispatch = useDispatch();
+	const [collapsed, setCollapse] = useState(false);
 
 	useEffect(() => {
 		dispatch(getCategoriesTC())
@@ -31,10 +33,9 @@ function App() {
 		<Layout>
 			<Header>
 				<HeaderNavBar />
-				<MenuBar />
 			</Header>
-			<Layout className={s.block}>
-				<Sider width={200} className="site-layout-background" >
+			<Layout >
+				<Sider width={200} className="site-layout-background" collapsed={collapsed}  collapsible onCollapse={() => setCollapse(!collapsed)}>
 					<MenuBar />
 
 				</Sider>
@@ -52,7 +53,7 @@ function App() {
 							<Route exact path="/main/:id?" render={() => <MainWindow />} />
 							<Route exact path="/admin" render={() => <Admin />} />
 							<Route render={() => <Login />} path="/login" />
-							<Route render={() => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{height:"90vh"}}/>} path="*" />
+							<Route render={() => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ height: "90vh" }} />} path="*" />
 
 						</Switch>
 					</Content>

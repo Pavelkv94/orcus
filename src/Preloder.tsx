@@ -1,9 +1,9 @@
 import { Spin } from "antd"
-import s from './App.module.css';
+import './App.module.css';
 
 export const Preloader = () => {
 	return (
-		<div className={s.preloader}>
+		<div className='preloader'>
 			<Spin tip="Loading..." size="large">
 			</Spin>
 		</div>
