@@ -10,6 +10,7 @@ import { getCategoriesTC } from './redux/categoriesReducer';
 import { useDispatch } from 'react-redux';
 import { Login } from './components/Login/Login';
 import { Admin } from './components/MainWindow/Admin/Admin';
+import { getPostsTC } from './redux/postsReducer';
 const { Header, Content, Sider } = Layout;
 
 
@@ -18,6 +19,11 @@ function App() {
 
 	useEffect(() => {
 		dispatch(getCategoriesTC())
+	}, [dispatch]);
+
+
+	useEffect(() => {
+		dispatch(getPostsTC())
 	}, [dispatch]);
 
 	return (
@@ -46,7 +52,7 @@ function App() {
 							<Route exact path="/main/:id?" render={() => <MainWindow />} />
 							<Route exact path="/admin" render={() => <Admin />} />
 							<Route render={() => <Login />} path="/login" />
-							<Route render={() => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />} path="*" />
+							<Route render={() => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{height:"90vh"}}/>} path="*" />
 
 						</Switch>
 					</Content>

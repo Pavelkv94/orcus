@@ -7,19 +7,12 @@ import { useSelector } from 'react-redux';
 import { AppStateType } from "../../../redux/store";
 import { RequestStatusType } from "../../../redux/appReducer";
 import { Redirect } from "react-router";
-import { useDispatch } from 'react-redux';
-import React, { useEffect } from "react";
-import { getPostsTC } from "../../../redux/postsReducer";
+import React from "react";
 
 export const Admin = React.memo(() => {
 
 	const status = useSelector<AppStateType, RequestStatusType>(state => state.app.status);
 	const isAuth = useSelector<AppStateType, boolean>(state => state.app.isAuth);
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		dispatch(getPostsTC())
-	}, [dispatch]);
 
 	if (isAuth) {
 		return <Redirect to="/login" />

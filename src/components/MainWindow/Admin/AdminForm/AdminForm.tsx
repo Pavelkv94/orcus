@@ -48,7 +48,6 @@ export const AdminForm = React.memo(() => {
 	const categories = useSelector<AppStateType, Array<any>>(state => state.categories);
 	const dispatch = useDispatch();
 
-	const [slug, setSlug] = useState<string>("");
 	const [title, setTitle] = useState<string>("");
 	const [dropValue, setDropValue] = useState("");
 	const [text, setText] = useState<string>("");
@@ -71,14 +70,6 @@ export const AdminForm = React.memo(() => {
 		<div className={s.form}>
 			<div className={s.fields}>
 				<div className={s.postsFields}>
-					<label htmlFor="slug">{"Slug(Short Title for menu):"}</label>
-					<Input
-						type="text"
-						name="slug"
-						autoComplete="off"
-						value={slug}
-						onChange={(e) => { setSlug(e.currentTarget.value) }}
-					/>
 					<label htmlFor="title">Title: </label>
 					<Input
 						type="text"
@@ -133,8 +124,8 @@ export const AdminForm = React.memo(() => {
 				<Button
 					type="primary"
 					size="large"
-					onClick={() => { dispatch(createPostsTC(title, slug, dropValue, text)); setSuccess(true); setSlug(""); setTitle(""); setDropValue(""); setText("") }}
-					disabled={slug === "" || title === "" || dropValue === "" || text === "" ? true : false}
+					onClick={() => { dispatch(createPostsTC(title, dropValue, text));  setSuccess(true); setTitle(""); setDropValue(""); setText("") }}
+					disabled={title === "" || dropValue === "" || text === "" ? true : false}
 				>CREATE NEW POST</Button>
 			</div>
 			{isSuccess && <Result status="success"

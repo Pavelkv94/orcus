@@ -3,7 +3,6 @@ import { setAppStatusAC } from './appReducer';
 export type PostType = {
 	_id: string
 	title: string
-	slug: string
 	text: string
 	category: string
 	__v: number
@@ -38,12 +37,13 @@ export const getPostsTC = () => (dispatch: any) => {
 		.catch(err => console.log(err))
 }
 
-export const createPostsTC = (slug: string, title: string, category: string, text: string) => (dispatch: any) => {
+export const createPostsTC = (title: string, category: string, text: string) => (dispatch: any) => {
 	dispatch(setAppStatusAC('loading'))
-	API.createPost(slug, title, category, text)
+	API.createPost(title, category, text)
 		.then(res => {
 			dispatch(setAppStatusAC('succeeded'))
 
 		})
 		.catch(err => console.log(err))
 }
+

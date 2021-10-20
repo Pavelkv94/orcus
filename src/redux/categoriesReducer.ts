@@ -5,6 +5,7 @@ type ActionType = any
 
 export type CategoryType = {
 	title: string
+	posts: [string]
 	__v: number
 	_id: string
 }
@@ -55,3 +56,13 @@ export const addCategoriesTC = (title: string) => (dispatch: any) => {
 		})
 		.catch(err => console.log("err"))
 }
+
+
+// export const addPostToCategoriesTC = (post: string, category: string) => (dispatch: any) => {
+// 	dispatch(setAppStatusAC('loading'))
+// 	API.addPostToCategory(post, category)
+// 		.then(res => {
+// 			dispatch(setAppStatusAC('succeeded'))
+// 		})
+// 		.catch(err => console.log("err"))
+// }
