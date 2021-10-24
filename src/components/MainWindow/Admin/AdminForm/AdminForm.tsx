@@ -99,7 +99,7 @@ export const AdminForm = React.memo(() => {
 				</div>
 			</div>
 
-			<a href="https://stackedit.io/app#" target="_blank" rel="noreferrer">MarkDown Editor</a>
+			<a href="https://stackedit.io/app#" target="_blank" rel="noreferrer" style={{width: "200px"}}><Button shape='round' danger> MarkDown Editor</Button></a>
 
 			<div className={s.createArea}>
 				<ReactMde
@@ -124,7 +124,7 @@ export const AdminForm = React.memo(() => {
 				<Button
 					type="primary"
 					size="large"
-					onClick={() => { dispatch(createPostsTC(title, dropValue, text));  setSuccess(true); setTitle(""); setDropValue(""); setText("") }}
+					onClick={() => { dispatch(createPostsTC(title, dropValue, text)); setSuccess(true); setTitle(""); setDropValue(""); setText("") }}
 					disabled={title === "" || dropValue === "" || text === "" ? true : false}
 				>CREATE NEW POST</Button>
 			</div>

@@ -1,7 +1,6 @@
 import s from "./Admin.module.css"
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { AdminForm } from "./AdminForm/AdminForm";
-import { PostList } from "./PostList/PostList";
 import { Preloader } from "../../../Preloder";
 import { useSelector } from 'react-redux';
 import { AppStateType } from "../../../redux/store";
@@ -22,7 +21,6 @@ export const Admin = React.memo(() => {
 		<div className={s.adminContainer}>
 			<AdminForm />
 			<hr />
-			<PostList />
 		</div></>
 	)
 

@@ -7,7 +7,7 @@ export const HeaderNavBar = React.memo(() => {
 
 	return (
 		<div>
-			<Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} className={s.menu} >
+			<Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} className={s.menu} >
 				<Menu.Item><NavLink to={{ pathname: `/admin` }} >ADMIN</NavLink></Menu.Item>
 			</Menu>
 		</div>

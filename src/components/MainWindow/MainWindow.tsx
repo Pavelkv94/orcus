@@ -25,8 +25,6 @@ export const MainWindow = React.memo(() => {
 	return (
 
 		<div className={s.mainWindow}>
-
-			<h2>{post?.title}</h2>
 			<ReactMarkdown
 				className={s.mde}
 			>{post?.text}</ReactMarkdown>
