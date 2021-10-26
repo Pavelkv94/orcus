@@ -3,7 +3,7 @@ import axios from 'axios'
 let h = new Headers();
 h.append("Content-Type", "application/json");
 const instance = axios.create({
-	baseURL: "http://localhost:3002",
+	baseURL: "https://orcuserver.herokuapp.com",
 });
 
 export const API = {
