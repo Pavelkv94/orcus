@@ -1,0 +1,15 @@
+.login {
+	width: 100vw;
+	height: 100vh;
+	z-index: 999;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-image: url("https://coolbackgrounds.io/images/backgrounds/index/sea-edge-79ab30e2.png");
+	background-size: cover;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+form {color: red;}
