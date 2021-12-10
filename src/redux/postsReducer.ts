@@ -64,6 +64,7 @@ export const getShortPostsTC = () => (dispatch: any) => {
 			dispatch(setAppStatusAC('succeeded'))
 		})
 		.catch(err => console.log(err))
+		dispatch(setAppStatusAC('idle'))
 }
 
 export const createPostsTC = (title: string, category: string, text: string) => (dispatch: any) => {
@@ -74,5 +75,27 @@ export const createPostsTC = (title: string, category: string, text: string) => 
 
 		})
 		.catch(err => console.log(err))
+		dispatch(setAppStatusAC('idle'))
 }
 
+export const editPostsTC = (title: string, category: string, text: string) => (dispatch: any) => {
+	dispatch(setAppStatusAC('loading'))
+	API.editPost(title, category, text)
+		.then(res => {
+			dispatch(setAppStatusAC('succeeded'))
+
+		})
+		.catch(err => console.log(err))
+		dispatch(setAppStatusAC('idle'))
+}
+
+export const deletePostsTC = (id: string) => (dispatch: any) => {
+	dispatch(setAppStatusAC('loading'))
+	API.deletePost(id)
+		.then(res => {
+			dispatch(setAppStatusAC('succeeded'))
+
+		})
+		.catch(err => console.log(err))
+		dispatch(setAppStatusAC('idle'))
+}

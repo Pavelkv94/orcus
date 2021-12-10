@@ -1,5 +1,5 @@
 import s from "./AdminForm.module.css"
-import { Input, Button, Select, Result, Collapse } from 'antd';
+import { Input, Button, Select, Result, Collapse, notification, Popover } from 'antd';
 import ReactMde from "react-mde";
 import React, { useEffect, useState } from "react";
 import { Suggestion } from "react-mde";
@@ -8,8 +8,9 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import { API } from './../../../../api/api'
 import { useDispatch, useSelector } from "react-redux";
 import { AppStateType } from "../../../../redux/store";
-import { createPostsTC, getShortPostsTC, PostType, ShortPostType } from "../../../../redux/postsReducer";
+import { createPostsTC, deletePostsTC, editPostsTC, getShortPostsTC, PostType, ShortPostType } from "../../../../redux/postsReducer";
 import { getPostTC } from "../../../../redux/filterReducer";
+import { RequestStatusType } from "../../../../redux/appReducer";
 
 const { Panel } = Collapse;
 
@@ -51,6 +52,7 @@ export const AdminForm = React.memo(() => {
 	const categories = useSelector<AppStateType, Array<any>>(state => state.categories);
 	const posts = useSelector<AppStateType, Array<ShortPostType>>(state => state.posts.shortPosts);
 	const post = useSelector<AppStateType, PostType>(state => state.filter);
+	const status = useSelector<AppStateType, RequestStatusType>(state => state.app.status);
 	const dispatch = useDispatch();
 
 	const [title, setTitle] = useState<string>("");
@@ -61,13 +63,22 @@ export const AdminForm = React.memo(() => {
 
 	const [selectedTab, setSelectedTab] = useState<"write" | "preview" | undefined>("write");
 	const [newCategory, setNewCategory] = useState<string>("");
-	const [isSuccess, setSuccess] = useState<boolean>(false);
 
 	useEffect(() => {
 		allPosts && dispatch(getShortPostsTC());
 	}, [allPosts]);
 
-	if (isSuccess === true) { setTimeout(() => { setSuccess(false) }, 5000) }
+	useEffect(() => {
+		status === 'succeeded' && notification.success({
+			message: `SUCCESS!`,
+			placement: 'topRight'
+		})
+		status === 'failed' && notification.error({
+			message: `FAILED!`,
+			placement: 'topRight'
+		})
+	}, [status])
+
 	function handleChange(value: any) {
 		setDropValue(value)
 	};
@@ -77,13 +88,13 @@ export const AdminForm = React.memo(() => {
 		setNewCategory('')
 	};
 
-	const createPost = () => { dispatch(createPostsTC(title, dropValue, text)); setSuccess(true); setTitle(""); setDropValue(""); setText("") };
+	const createPost = () => { dispatch(createPostsTC(title, dropValue, text)); setTitle(""); setDropValue(""); setText("") };
 
-	const editPost = (id: string) => { setEditMode(true); dispatch(getPostTC(id)); setTitle(post.title); setDropValue(post.category); setText(post.text)};
+	const editPost = (id: string) => { setEditMode(true); dispatch(getPostTC(id)); setTitle(post.title); setDropValue(post.category); setText(post.text); };
 
-	const deletePost = (id: string) => { console.log(id) };
+	const deletePost = (id: string) => { deletePostsTC(id) };
 
-	const saveChanges = () => {};
+	const saveChanges = () => { dispatch(editPostsTC(title, dropValue, text)); setTitle(""); setDropValue(""); setText("") };
 
 	return (
 		<div className={s.form}>
@@ -117,9 +128,14 @@ export const AdminForm = React.memo(() => {
 					</div>
 				</div>
 			</div>
-
-			<a href="https://stackedit.io/app#" target="_blank" rel="noreferrer" style={{ width: "200px" }}><Button shape='round' danger> MarkDown Editor</Button></a>
-
+			<div className={s.topActions}>
+				<a href="https://stackedit.io/app#" target="_blank" rel="noreferrer" style={{ width: "200px" }}><Button shape='round' danger>MarkDown Editor</Button></a>
+				<Popover content='Copied!'
+					trigger='click'
+				><Button shape='round' style={{ color: 'orange', borderColor: 'orange' }} onClick={() => navigator.clipboard.writeText(text)}>
+						COPY ALL TEXT
+					</Button></Popover>
+			</div>
 			<div className={s.createArea}>
 				<ReactMde
 					minEditorHeight={500}
@@ -149,20 +165,17 @@ export const AdminForm = React.memo(() => {
 				>{!editMode ? 'CREATE NEW POST' : 'SAVE CHANGES'}</Button>
 
 			</div>
-			
-			{isSuccess && <Result status="success"
-				title="Post Is Created!!!" />}
 			<hr />
 
 			{!allPosts ? <Button type="primary" ghost onClick={() => setAllPosts(true)}>All Posts</Button>
 				: <Button type="primary" ghost onClick={() => setAllPosts(false)}>Close Posts List</Button>}
 
 			{allPosts &&
-				<Collapse defaultActiveKey={['1']} onChange={() => { }}>
+				<Collapse>
 					{categories.map(cat =>
 						<Panel header={cat.title} key={cat._id}>
 							{posts.map(post => post.category === cat.title &&
-								<p>{post.title}
+								<p key={post._id}>{post.title}
 									<Button type="dashed" style={{ color: 'green', margin: '0px 4px', float: 'right' }} onClick={() => editPost(post._id)}>Edit</Button>
 									<Button type="dashed" style={{ color: 'red', margin: '0px 4px', float: 'right' }} onClick={() => deletePost(post._id)}>Delete</Button>
 								</p>

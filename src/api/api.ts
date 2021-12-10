@@ -17,6 +17,12 @@ export const API = {
 	createPost(title: string, category: string, text: string) {
 		return instance.post('/posts', { title, category, text })
 	},
+	editPost(title: string, category: string, text: string) {
+		return instance.put('/posts', { title, category, text })
+	},
+	deletePost(id:string) {
+		return instance.delete(`/posts/${id}`)
+	},
 	getPosts() {
 		return instance.get('/posts')
 	},
