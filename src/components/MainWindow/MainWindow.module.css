@@ -4,6 +4,7 @@
   align-items: center;
   min-height: 90vh;
 }
+
 .backTop {
   height: 40;
   width: 40;
@@ -14,9 +15,11 @@
   text-align: center;
   font-size: 14px;
 }
-img, p, a {
+
+img, p, a, blockquote, ol, ul {
 	width: 80%;
 }
+
 code {
 	word-break: break-word;
     word-wrap: break-word;

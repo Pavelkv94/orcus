@@ -1,17 +1,17 @@
 import React  from "react";
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 
-export const CloseModal = ({ visible, setVisible, callback }: any) => {
+export const CloseModal = ({ visible, setVisible, callback, title }: any) => {
   
   const [confirmLoading, setConfirmLoading] = React.useState(false);
-  const [modalText, setModalText] = React.useState('Content of the modal');
+  //const [modalText, setModalText] = React.useState('Content of the modal');
 
-  const showModal = () => {
-    setVisible(true);
-  };
+  //const showModal = () => {
+  //  setVisible(true);
+  //};
 
   const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
+    //setModalText('The modal will be closed after two seconds');
 	callback()
     setConfirmLoading(true);
     setTimeout(() => {
@@ -32,6 +32,7 @@ export const CloseModal = ({ visible, setVisible, callback }: any) => {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
+		<p>Are you sure you want to delete the <b>{title}</b>?</p>
         <p>This action cannot be undone.</p>
       </Modal>
   );

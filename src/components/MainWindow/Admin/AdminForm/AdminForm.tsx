@@ -62,7 +62,7 @@ export const AdminForm = React.memo(() => {
 	const [allPosts, setAllPosts] = useState<boolean>(false);
 	const [editMode, setEditMode] = useState<boolean>(false);
 	const [visible, setVisible] = React.useState<boolean>(false);
-	const [tempId, setTempId] = React.useState<string>('');
+	const [tempId, setTempId] = React.useState<any>({});
 
 	const [selectedTab, setSelectedTab] = useState<"write" | "preview" | undefined>("write");
 	const [newCategory, setNewCategory] = useState<string>("");
@@ -95,10 +95,9 @@ export const AdminForm = React.memo(() => {
 
 	const editPost = (id: string) => { setEditMode(true); dispatch(getPostTC(id)); setTitle(post.title); setDropValue(post.category); setText(post.text); };
 
-	// const deletePost = (id: string) => dispatch(deletePostsTC(id));
-	const deletePostModal = (id: string) => {setVisible(true); setTempId(id)};
+	const deletePostModal = (id: string, title: string) => {setVisible(true); setTempId({ id: id, title: title})};
 
-	const deletePost = () => {dispatch(deletePostsTC(tempId)); dispatch(getShortPostsTC());};
+	const deletePost = () => {dispatch(deletePostsTC(tempId.id)); dispatch(getShortPostsTC());};
 
 	const saveChanges = (id: string) => { dispatch(editPostsTC(title, dropValue, text, id)); setTitle(""); setDropValue(""); setText("") };
 
@@ -183,12 +182,12 @@ export const AdminForm = React.memo(() => {
 							{posts.map(post => post.category === cat.title &&
 								<p key={post._id}>{post.title}
 									<Button type="dashed" style={{ color: 'green', margin: '0px 4px', float: 'right' }} onClick={() => editPost(post._id)}>Edit</Button>
-									<Button type="dashed" style={{ color: 'red', margin: '0px 4px', float: 'right' }} onClick={() => deletePostModal(post._id)}>Delete</Button>
+									<Button type="dashed" style={{ color: 'red', margin: '0px 4px', float: 'right' }} onClick={() => deletePostModal(post._id, post.title)}>Delete</Button>
 								</p>
 							)}
 						</Panel>)}
 				</Collapse>}
-				<CloseModal visible={visible} setVisible={setVisible} callback={deletePost}/>
+				<CloseModal visible={visible} setVisible={setVisible} callback={deletePost} title={tempId.title}/>
 		</div>
 	)
 })

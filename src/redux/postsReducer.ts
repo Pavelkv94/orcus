@@ -24,7 +24,7 @@ export function postsReducer(state: InitialStateType = initialState, action: Act
 		case "SET-POSTS":
 			return { ...state, posts: action.posts }
 		case "SET-SHORT-POSTS":
-			return { ...state, shortPosts: action.shortPosts.sort((a:ShortPostType,b:ShortPostType)=>a.title>b.title ? 1 : -1) }
+			return { ...state, shortPosts: action.shortPosts.sort((a: ShortPostType, b: ShortPostType) => a.title > b.title ? 1 : -1) }
 		default: return state
 	}
 }
@@ -44,7 +44,7 @@ export function setShortPostsAC(shortPosts: any) {
 }
 
 //unOptimazed
-const getPostsTC = () => (dispatch: any) => {
+/*const getPostsTC = () => (dispatch: any) => {
 	dispatch(setAppStatusAC('loading'))
 	API.getPosts()
 		.then(res => {
@@ -53,7 +53,7 @@ const getPostsTC = () => (dispatch: any) => {
 			dispatch(setAppStatusAC('succeeded'))
 		})
 		.catch(err => console.log(err))
-}
+}*/
 
 export const getShortPostsTC = () => (dispatch: any) => {
 	dispatch(setAppStatusAC('loading'))
@@ -64,7 +64,7 @@ export const getShortPostsTC = () => (dispatch: any) => {
 			dispatch(setAppStatusAC('succeeded'))
 		})
 		.catch(err => console.log(err))
-		dispatch(setAppStatusAC('idle'))
+	dispatch(setAppStatusAC('idle'))
 }
 
 export const createPostsTC = (title: string, category: string, text: string) => (dispatch: any) => {
@@ -75,7 +75,7 @@ export const createPostsTC = (title: string, category: string, text: string) => 
 
 		})
 		.catch(err => console.log(err))
-		dispatch(setAppStatusAC('idle'))
+	dispatch(setAppStatusAC('idle'))
 }
 
 export const editPostsTC = (title: string, category: string, text: string, id: string) => (dispatch: any) => {
@@ -86,7 +86,7 @@ export const editPostsTC = (title: string, category: string, text: string, id: s
 
 		})
 		.catch(err => console.log(err))
-		dispatch(setAppStatusAC('idle'))
+	dispatch(setAppStatusAC('idle'))
 }
 
 export const deletePostsTC = (id: string) => (dispatch: any) => {
@@ -97,5 +97,5 @@ export const deletePostsTC = (id: string) => (dispatch: any) => {
 
 		})
 		.catch(err => console.log(err))
-		dispatch(setAppStatusAC('idle'))
+	dispatch(setAppStatusAC('idle'))
 }
