@@ -1,6 +1,9 @@
-type ActionType = any
+import { AxiosError } from 'axios';
+import { API } from '../api/api';
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
+
+type ActionType = any
 
 const initialState = {
 	status: 'idle' as RequestStatusType,
@@ -37,18 +40,11 @@ export const setAppAuthAC = (auth: boolean) => {
 	}
 }
 
-// export const loginTC = (pass: any) => (dispatch: any) => {
-//     // dispatch(setAppStatusAC({ status: 'loading' }))
-//     API.login(pass)
-//         .then(res => {
-//             if (res.data.pass === '200') {
-//                 dispatch(setAppAuthAC(true));
-//                 // dispatch(setAppStatusAC({ status: 'succeeded' }))
-//             } else {
-//                 // handleServerNetworkError(dispatch, res.data.messages[0])
-//             }
-//         })
-//         .catch((err: AxiosError) => {
-//             // handleServerNetworkError(dispatch, err.message)
-//         })
-// };
+export const loginTC = (pass: any) => (dispatch: any) => {
+    // dispatch(setAppStatusAC({ status: 'loading' }))
+    API.login(pass)
+        .then(res => console.log(res))
+        .catch((err: AxiosError) => {
+            // handleServerNetworkError(dispatch, err.message)
+        })
+};

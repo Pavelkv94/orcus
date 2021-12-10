@@ -1,5 +1,5 @@
 import s from "./AdminForm.module.css"
-import { Input, Button, Select, Result, Collapse, notification, Popover } from 'antd';
+import { Input, Button, Select, Collapse, notification, Popover } from 'antd';
 import ReactMde from "react-mde";
 import React, { useEffect, useState } from "react";
 import { Suggestion } from "react-mde";
@@ -11,6 +11,7 @@ import { AppStateType } from "../../../../redux/store";
 import { createPostsTC, deletePostsTC, editPostsTC, getShortPostsTC, PostType, ShortPostType } from "../../../../redux/postsReducer";
 import { getPostTC } from "../../../../redux/filterReducer";
 import { RequestStatusType } from "../../../../redux/appReducer";
+import { CloseModal } from "./Modal";
 
 const { Panel } = Collapse;
 
@@ -60,13 +61,15 @@ export const AdminForm = React.memo(() => {
 	const [text, setText] = useState<string>("");
 	const [allPosts, setAllPosts] = useState<boolean>(false);
 	const [editMode, setEditMode] = useState<boolean>(false);
+	const [visible, setVisible] = React.useState<boolean>(false);
+	const [tempId, setTempId] = React.useState<string>('');
 
 	const [selectedTab, setSelectedTab] = useState<"write" | "preview" | undefined>("write");
 	const [newCategory, setNewCategory] = useState<string>("");
 
 	useEffect(() => {
 		allPosts && dispatch(getShortPostsTC());
-	}, [allPosts]);
+	}, [dispatch, allPosts]);
 
 	useEffect(() => {
 		status === 'succeeded' && notification.success({
@@ -88,13 +91,16 @@ export const AdminForm = React.memo(() => {
 		setNewCategory('')
 	};
 
-	const createPost = () => { dispatch(createPostsTC(title, dropValue, text)); setTitle(""); setDropValue(""); setText("") };
+	const createPost = () => { dispatch(createPostsTC(title, dropValue, text)); setTitle(""); setDropValue(""); setText(""); dispatch(getShortPostsTC()); };
 
 	const editPost = (id: string) => { setEditMode(true); dispatch(getPostTC(id)); setTitle(post.title); setDropValue(post.category); setText(post.text); };
 
-	const deletePost = (id: string) => { deletePostsTC(id) };
+	// const deletePost = (id: string) => dispatch(deletePostsTC(id));
+	const deletePostModal = (id: string) => {setVisible(true); setTempId(id)};
 
-	const saveChanges = () => { dispatch(editPostsTC(title, dropValue, text)); setTitle(""); setDropValue(""); setText("") };
+	const deletePost = () => {dispatch(deletePostsTC(tempId)); dispatch(getShortPostsTC());};
+
+	const saveChanges = (id: string) => { dispatch(editPostsTC(title, dropValue, text, id)); setTitle(""); setDropValue(""); setText("") };
 
 	return (
 		<div className={s.form}>
@@ -160,7 +166,7 @@ export const AdminForm = React.memo(() => {
 				<Button
 					type="primary"
 					size="large"
-					onClick={!editMode ? createPost : saveChanges}
+					onClick={!editMode ? createPost : () => saveChanges(post._id)}
 					disabled={title === "" || dropValue === "" || text === "" ? true : false}
 				>{!editMode ? 'CREATE NEW POST' : 'SAVE CHANGES'}</Button>
 
@@ -177,11 +183,12 @@ export const AdminForm = React.memo(() => {
 							{posts.map(post => post.category === cat.title &&
 								<p key={post._id}>{post.title}
 									<Button type="dashed" style={{ color: 'green', margin: '0px 4px', float: 'right' }} onClick={() => editPost(post._id)}>Edit</Button>
-									<Button type="dashed" style={{ color: 'red', margin: '0px 4px', float: 'right' }} onClick={() => deletePost(post._id)}>Delete</Button>
+									<Button type="dashed" style={{ color: 'red', margin: '0px 4px', float: 'right' }} onClick={() => deletePostModal(post._id)}>Delete</Button>
 								</p>
 							)}
 						</Panel>)}
 				</Collapse>}
+				<CloseModal visible={visible} setVisible={setVisible} callback={deletePost}/>
 		</div>
 	)
 })

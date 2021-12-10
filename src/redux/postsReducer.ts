@@ -78,9 +78,9 @@ export const createPostsTC = (title: string, category: string, text: string) => 
 		dispatch(setAppStatusAC('idle'))
 }
 
-export const editPostsTC = (title: string, category: string, text: string) => (dispatch: any) => {
+export const editPostsTC = (title: string, category: string, text: string, id: string) => (dispatch: any) => {
 	dispatch(setAppStatusAC('loading'))
-	API.editPost(title, category, text)
+	API.editPost(title, category, text, id)
 		.then(res => {
 			dispatch(setAppStatusAC('succeeded'))
 

@@ -15,7 +15,7 @@ export const MenuBar = React.memo(() => {
 	const dispatch = useDispatch();
 	const posts = useSelector<AppStateType, Array<ShortPostType>>(state => state.posts.shortPosts);
 	const categories = useSelector<AppStateType, Array<CategoryType>>(state => state.categories);
-	console.log(posts)
+
 	return (
 		<div>
 			<Menu
