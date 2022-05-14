@@ -4,7 +4,8 @@ const expandHeaders = async () => ({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
-const baseUrl = (url: string) => `http://localhost:3002${url}`;
+// const baseUrl = (url: string) => `http://localhost:3002${url}`;
+const baseUrl = (url: string) => `https://orcuserver.herokuapp.com${url}`;
 
 const newAPI = {
     get: (url: string, headers: any = {}, params: any = {}) => {
