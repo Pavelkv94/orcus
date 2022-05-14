@@ -1,1 +1,9 @@
-
+.username {
+    color: rgb(97, 108, 255);
+    position: absolute;
+    right: 200px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: underline;
+    width: 100px;
+}

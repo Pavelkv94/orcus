@@ -1,4 +1,6 @@
+import { logger } from 'redux-logger';
 import { applyMiddleware, combineReducers, createStore } from "redux";
+
 import { categoriesReducer } from "./categoriesReducer";
 import { postsReducer } from "./postsReducer";
 import thunk from 'redux-thunk';
@@ -13,6 +15,6 @@ const rootReducer = combineReducers({
 
 });
 
-export const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
 export type AppStateType = ReturnType<typeof rootReducer>

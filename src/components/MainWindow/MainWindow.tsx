@@ -15,6 +15,7 @@ export const MainWindow = React.memo(() => {
 	const { id } = useParams<{ id: string }>();
 	const dispatch = useDispatch();
 	const status = useSelector<AppStateType, RequestStatusType>(state => state.app.status);
+	
 	useEffect(() => { dispatch(getPostTC(id)) }, [dispatch, id])
 	const post = useSelector<AppStateType, PostType>(state => state.filter);
 	const isAuth = useSelector<AppStateType, boolean>(state => state.app.isAuth);

@@ -24,9 +24,9 @@ export function setPostAC(post: PostType) {
 	} as const
 }
 
-export const getPostTC = (id: string) => (dispatch: any) => {
+export const getPostTC = (id: string) => async (dispatch: any) => {
 	dispatch(setAppStatusAC('loading'))
-	API.getPost(id)
+	await API.getPost(id)
 		.then(res => {
 			const post = res.data[0];
 			dispatch(setPostAC(post))

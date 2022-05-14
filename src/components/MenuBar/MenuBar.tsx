@@ -22,13 +22,12 @@ export const MenuBar = React.memo(() => {
 				className={s.menuBar}
 				theme="dark"
 				mode="inline"
-				defaultSelectedKeys={['1']}
 				subMenuCloseDelay={2}
 			>
-				{categories?.map(c =>
-					<SubMenu key={c._id} icon={<DingtalkOutlined />} title={c.title} >
-						{posts?.map(p => 
-							p.category === c.title && <Menu.Item key={p._id} onClick={() => dispatch(getPostTC(p._id))}>
+				{categories?.map((c) =>
+					<SubMenu key={Math.random()} icon={<DingtalkOutlined />} title={c.title} >
+						{posts?.map((p, index) => 
+							p.category === c.title && <Menu.Item key={index} onClick={() => dispatch(getPostTC(p._id))}>
 								<NavLink to={`/main/${p._id}`}> {p.title}</NavLink> 
 								</Menu.Item>)}
 					</SubMenu>)}

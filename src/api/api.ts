@@ -1,41 +1,87 @@
-import axios from 'axios'
+import axios from "axios";
 
-let h = new Headers();
-h.append("Content-Type", "application/json");
-const instance = axios.create({
-	baseURL: "https://orcuserver.herokuapp.com",
-	// baseURL: "http://localhost:3002",
+const expandHeaders = async () => ({
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
-export const API = {
-	createCategory(title: any) {
-		return instance.post('/categories', { title: title })
-	},
-	getCategories() {
-		return instance.get('/categories')
-	},
-	createPost(title: string, category: string, text: string) {
-		return instance.post('/posts', { title, category, text })
-	},
-	editPost(title: string, category: string, text: string, id: string) {
-		return instance.put(`/posts/${id}`, { title, category, text })
-	},
-	deletePost(id:string) {
-		return instance.delete(`/posts/${id}`)
-	},
-	getPosts() {
-		return instance.get('/posts')
-	},
-	getShortPosts() {
-		return instance.get('/shortPosts')
-	},
-	getPost(id: string) {
-		return instance.get(`main/${id}`)
-	},
-	addPostToCategory(post: string, category: string) {
-		return instance.put('/categories', { newPost: post, category })
-	},
-	login(pass: any) {
-        return instance.post('/auth', { pass });
+const baseUrl = (url: string) => `http://localhost:3002${url}`;
+
+const newAPI = {
+    get: (url: string, headers: any = {}, params: any = {}) => {
+        return axios.get(url, {
+            headers,
+            params,
+        });
     },
-}
+    put(url: string, headers = {}, data = {}) {
+        return axios.put(url, data, {
+            headers,
+        });
+    },
+    post(url: string, headers = {}, data = {}) {
+        return axios.post(url, data, {
+            headers,
+        });
+    },
+    delete(url: string, headers = {}) {
+        return axios.delete(url, {
+            headers,
+        });
+    },
+};
+
+const instance = newAPI;
+export const API = {
+    async createCategory(title: any) {
+        return instance.post(baseUrl("/categories"), await expandHeaders(), {
+            title: title,
+        });
+    },
+    async getCategories() {
+        return instance.get(baseUrl("/categories"), await expandHeaders());
+    },
+    async createPost(title: string, category: string, text: string) {
+        return instance.post(baseUrl("/posts"), await expandHeaders(), {
+            title,
+            category,
+            text,
+        });
+    },
+    async editPost(title: string, category: string, text: string, id: string) {
+        return instance.put(baseUrl(`/posts/${id}`), await expandHeaders(), {
+            title,
+            category,
+            text,
+        });
+    },
+    async deletePost(id: string) {
+        return instance.delete(baseUrl(`/posts/${id}`), await expandHeaders());
+    },
+    async getPosts() {
+        return instance.get(baseUrl("/posts"), await expandHeaders());
+    },
+    async getShortPosts() {
+        return instance.get(baseUrl("/shortPosts"), await expandHeaders());
+    },
+    async getPost(id: string) {
+        return instance.get(baseUrl(`/main/${id}`), await expandHeaders());
+    },
+    async addPostToCategory(post: string, category: string) {
+        return instance.put(baseUrl("/categories"), await expandHeaders(), {
+            newPost: post,
+            category,
+        });
+    },
+    async login(payload: any) {
+        return instance.post(baseUrl("/auth/login"), {}, payload);
+    },
+    async registration(payload: any) {
+        return instance.post(baseUrl("/auth/registration"), {}, payload);
+    },
+    async me(username: string | null) {
+        return instance.get(
+            baseUrl(`/auth/me/${username}`),
+            await expandHeaders()
+        );
+    },
+};
