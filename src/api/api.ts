@@ -5,7 +5,7 @@ const expandHeaders = async () => ({
 });
 
 // const baseUrl = (url: string) => `http://localhost:3002${url}`;
-const baseUrl = (url: string) => `https://orcusnode.herokuapp.com${url}`;
+const baseUrl = (url: string) => `https://50a6-34-31-99-143.ngrok-free.app${url}`;
 
 const newAPI = {
     get: (url: string, headers: any = {}, params: any = {}) => {
