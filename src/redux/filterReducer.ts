@@ -33,7 +33,7 @@ export function setPostAC(post: PostType) {
 	} as const
 }
 
-export const getPostTC = (id: string) => async (dispatch: AppDispatch) => {
+export const getPostTC = (id: any) => async (dispatch: AppDispatch) => {
 	dispatch(setAppStatusAC('loading'))
 	await API.getPost(id)
 		.then(res => {

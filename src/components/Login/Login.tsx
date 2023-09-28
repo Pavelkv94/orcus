@@ -61,7 +61,7 @@ export const Login = React.memo(() => {
         (state) => state.app.isAuth
     );
 
-    const onFinish = (values: MouseEventHandler<HTMLElement>) => {
+    const onFinish = (values: any) => {
         if (Object.keys(values).includes("username")) {
             dispatch(loginTC(values));
         }

@@ -6,14 +6,15 @@ import ReactMarkdown from 'react-markdown'
 import { BackTop } from "antd";
 import { useParams, Navigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import React, { useEffect } from "react";
+import React, { Dispatch, useEffect } from "react";
 import { getPostTC } from "../../redux/filterReducer";
 import { RequestStatusType } from "../../redux/appReducer";
 import { Preloader } from "../../Preloder";
 
 export const MainWindow = React.memo(() => {
 	const { id } = useParams<{ id: string }>();
-	const dispatch = useDispatch();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const dispatch: Dispatch<any> = useDispatch();
 	const status = useSelector<AppStateType, RequestStatusType>(state => state.app.status);
 	
 	useEffect(() => { dispatch(getPostTC(id)) }, [dispatch, id])
