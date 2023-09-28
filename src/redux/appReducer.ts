@@ -58,7 +58,7 @@ const initialState = {
   error: null as string | null,
   info: "",
   isAuth: false,
-  user: {} as object,
+  user: {} as any,
   role: "" as string,
 };
 
