@@ -1,0 +1,8 @@
+div.ant-menu-submenu-title{
+	width: 200px;
+}
+
+ul li ul {
+	border: 1px solid red;
+	width: 100%;
+}
