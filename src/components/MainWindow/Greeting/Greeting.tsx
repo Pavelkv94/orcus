@@ -28,7 +28,7 @@ export const Greeting = React.memo(() => {
 			<div className={s.greet}>
 				<div></div>
 				<h2>Hello</h2>
-				<h3>This is orcus app. Good luck!</h3>
+				<h3>This is Orcus app. Good luck!</h3>
 				<div></div>
 				<section className={s.warning}>
 					<p>The developer of this application is not responsible for any consequences of its use.<br/> All materials are provided for educational purposes only!</p>
