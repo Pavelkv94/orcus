@@ -8,6 +8,6 @@ export default defineConfig({
     // Specify your desired output directory here
     outDir: 'build',
   },
-  base: '/',
+  base: './',
 })
 
