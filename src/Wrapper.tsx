@@ -52,9 +52,9 @@ const Wrapper = ({ mode }: WrapperPropsType) => {
   }, [dispatch, username]);
 
   useEffect(() => {
-    dispatch(getCategoriesTC());
-    dispatch(getShortPostsTC());
-  }, [dispatch]);
+    token && dispatch(getCategoriesTC());
+    token && dispatch(getShortPostsTC());
+  }, [dispatch, token]);
 
   if (!token) {
     return <Navigate to="/login" replace />;
