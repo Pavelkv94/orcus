@@ -1,39 +1,35 @@
-import s from "./MainWindow.module.css"
-import { useSelector } from 'react-redux';
-import { AppStateType } from "../../redux/store";
-import { PostType } from "../../redux/postsReducer";
-import ReactMarkdown from 'react-markdown'
+import s from "./MainWindow.module.css";
+import ReactMarkdown from "react-markdown";
 import { BackTop } from "antd";
-import { useParams, Navigate } from 'react-router';
-import { useDispatch } from 'react-redux';
-import React, { Dispatch, useEffect } from "react";
-import { getPostTC } from "../../redux/filterReducer";
-import { RequestStatusType } from "../../redux/appReducer";
-import { Preloader } from "../../Preloder";
+import { useParams } from "react-router";
+import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { getPostTC, PostType, resetPostAC } from "../../redux/postsReducer";
+import { useSelector } from "react-redux";
+import { AppDispatch, AppStateType } from "../../redux/store";
 
-export const MainWindow = React.memo(() => {
-	const { id } = useParams<{ id: string }>();
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const dispatch: Dispatch<any> = useDispatch();
-	const status = useSelector<AppStateType, RequestStatusType>(state => state.app.status);
-	
-	useEffect(() => { dispatch(getPostTC(id)) }, [dispatch, id])
-	const post = useSelector<AppStateType, PostType>(state => state.filter);
-	const isAuth = useSelector<AppStateType, boolean>(state => state.app.isAuth);
+const MainWindow = React.memo(() => {
+  const { id } = useParams<{ id: string }>();
+  const dispatch: AppDispatch = useDispatch();
 
-	
-	if (status === "loading") { return <Preloader /> }
-	if (!isAuth) {
-		return <Navigate to="/login" />
-	} else {
-	return (
+  const post = useSelector<AppStateType, PostType>((state) => state.posts.post);
 
-		<div className={s.mainWindow}>
-			<ReactMarkdown
-				className={s.mde} children={post?.text}/>
-			<BackTop>
-				<div className={s.backTop}>UP</div>
-			</BackTop>
-		</div>
-	)}
-})
+  useEffect(() => {
+    dispatch(getPostTC(id!));
+
+    return () => {
+      dispatch(resetPostAC());
+    };
+  }, [dispatch, id]);
+
+  return (
+    <div className={s.mainWindow}>
+      <ReactMarkdown className={s.mde} children={post?.text} />
+      <BackTop>
+        <div className={s.backTop}>UP</div>
+      </BackTop>
+    </div>
+  );
+});
+
+export default MainWindow;

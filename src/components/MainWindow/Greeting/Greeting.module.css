@@ -1,6 +1,7 @@
 .greet {
   height: 90vh;
   width: 100%;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,6 +23,8 @@ font-weight: 600;
 }
 
 section.warning {
+  min-width: 300px;
+  padding: 20px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

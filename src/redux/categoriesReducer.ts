@@ -1,6 +1,5 @@
 import { Dispatch } from "react";
 import { API } from "../api/api";
-import { AppStatusType, setAppStatusAC } from "./appReducer";
 
 type SetCategoriesType = {
   type: "SET-CATEGORIES";
@@ -11,7 +10,7 @@ type AddCategoriesType = {
   category: CategoryType;
 };
 
-type ActionType = SetCategoriesType | AddCategoriesType | AppStatusType;
+type ActionType = SetCategoriesType | AddCategoriesType;
 
 type AppDispatch = Dispatch<ActionType>;
 
@@ -49,30 +48,16 @@ export function addCategoriesAC(category: CategoryType) {
 }
 
 export const getCategoriesTC = () => (dispatch: AppDispatch) => {
-  // dispatch(setAppStatusAC('loading'))
   API.getCategories()
     .then((res) => {
       const categories = res.data;
       dispatch(setCategoriesAC(categories));
-      dispatch(setAppStatusAC("succeeded"));
     })
     .catch((err) => console.log(err));
 };
 
-export const addCategoriesTC = (title: string) => (dispatch: AppDispatch) => {
-  dispatch(setAppStatusAC("loading"));
+export const addCategoriesTC = (title: string) => () => {
   API.createCategory(title)
-    .then(() => {
-      dispatch(setAppStatusAC("succeeded"));
-    })
+    .then(() => {})
     .catch(() => console.log("err"));
 };
-
-// export const addPostToCategoriesTC = (post: string, category: string) => (dispatch: any) => {
-// 	dispatch(setAppStatusAC('loading'))
-// 	API.addPostToCategory(post, category)
-// 		.then(res => {
-// 			dispatch(setAppStatusAC('succeeded'))
-// 		})
-// 		.catch(err => console.log("err"))
-// }

@@ -5,82 +5,98 @@ const expandHeaders = async () => ({
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
-// const baseUrl = (url: string) => `http://localhost:3002${url}`;
-const baseUrl = (url: string) => `https://orcus-server.onrender.com${url}`;
+const baseUrl = (url: string) => `http://localhost:5000${url}`;
+// const baseUrl = (url: string) => `https://orcus-server.onrender.com${url}`;
+
+const axiosInstance = axios.create(); // Create an Axios instance
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    if ((error.response && error.response.status === 403) || (error.response && error.response.status === 401)) {
+      console.error("Access denied: You do not have permission to perform this action.");
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      window.location.href = "/login"; // Redirect to unauthorized page
+    }
+    return Promise.reject(error); // Reject the promise so that it can be handled downstream
+  }
+);
 
 const newAPI = {
   get: (url: string, headers: object = {}, params: object = {}) => {
-    return axios.get(url, {
+    return axiosInstance.get(url, {
       headers,
       params,
     });
   },
   put(url: string, headers = {}, data = {}) {
-    return axios.put(url, data, {
+    return axiosInstance.put(url, data, {
       headers,
     });
   },
   post(url: string, headers = {}, data = {}) {
-    return axios.post(url, data, {
+    return axiosInstance.post(url, data, {
       headers,
     });
   },
   delete(url: string, headers = {}) {
-    return axios.delete(url, {
+    return axiosInstance.delete(url, {
       headers,
     });
   },
 };
 
-const instance = newAPI;
 export const API = {
   async createCategory(title: string) {
-    return instance.post(baseUrl("/categories"), await expandHeaders(), {
+    return newAPI.post(baseUrl("/categories"), await expandHeaders(), {
       title: title,
     });
   },
   async getCategories() {
-    return instance.get(baseUrl("/categories"), await expandHeaders());
+    return newAPI.get(baseUrl("/categories"), await expandHeaders());
   },
   async createPost(title: string, category: string, text: string) {
-    return instance.post(baseUrl("/posts"), await expandHeaders(), {
+    return newAPI.post(baseUrl("/posts"), await expandHeaders(), {
       title,
       category,
       text,
     });
   },
   async editPost(title: string, category: string, text: string, id: string) {
-    return instance.put(baseUrl(`/posts/${id}`), await expandHeaders(), {
+    return newAPI.put(baseUrl(`/posts/${id}`), await expandHeaders(), {
       title,
       category,
       text,
     });
   },
   async deletePost(id: string) {
-    return instance.delete(baseUrl(`/posts/${id}`), await expandHeaders());
+    return newAPI.delete(baseUrl(`/posts/${id}`), await expandHeaders());
   },
   async getPosts() {
-    return instance.get(baseUrl("/posts"), await expandHeaders());
+    return newAPI.get(baseUrl("/posts"), await expandHeaders());
   },
   async getShortPosts() {
-    return instance.get(baseUrl("/shortPosts"), await expandHeaders());
+    return newAPI.get(baseUrl("/posts/short"), await expandHeaders());
   },
   async getPost(id: string) {
-    return instance.get(baseUrl(`/main/${id}`), await expandHeaders());
+    return newAPI.get(baseUrl(`/posts/${id}`), await expandHeaders());
   },
   async addPostToCategory(post: string, category: string) {
-    return instance.put(baseUrl("/categories"), await expandHeaders(), {
+    return newAPI.put(baseUrl("/categories"), await expandHeaders(), {
       newPost: post,
       category,
     });
   },
   async login(payload: object) {
-    return instance.post(baseUrl("/auth/login"), {}, payload);
+    return newAPI.post(baseUrl("/auth/login"), {}, payload);
   },
   async registration(payload: CredentialsType) {
-    return instance.post(baseUrl("/auth/registration"), {}, payload);
+    return newAPI.post(baseUrl("/auth/registration"), {}, payload);
   },
   async me(username: string | null) {
-    return instance.get(baseUrl(`/auth/me/${username}`), await expandHeaders());
+    return newAPI.get(baseUrl(`/auth/me/${username}`), await expandHeaders());
   },
 };

@@ -1,6 +1,69 @@
-.adminContainer {
-  max-width: 1200px;
-  margin: 0 auto;
+.form {
   display: flex;
   flex-direction: column;
+}
+
+.fields {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.fields label {
+  margin-bottom: 6px;
+}
+.postsFields {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 400px;
+}
+.postsFields input {
+  margin-bottom: 10px;
+}
+
+.categoryFields {
+  margin: 20px;
+  padding: 15px;
+  background-color: rgb(199, 255, 221);
+}
+.categoryFields label {
+  margin-bottom: 6px;
+}
+.addCategory {
+  display: flex;
+  width: 300px;
+  margin-top: 6px;
+}
+
+.addCategory input {
+  margin-right: 10px;
+}
+.createArea {
+  /* box-shadow: 0px 10px 15px black; */
+  margin: 10px;
+}
+.btn {
+  width: 200px;
+  margin: 10px auto;
+  display: flex;
+}
+.topActions {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(237, 236, 236);
+}
+
+.warn {
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-align: center;
+  align-self: center;
+  color: brown;
+  font-weight: bold;
+  background-color: antiquewhite;
 }
