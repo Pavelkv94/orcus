@@ -48,7 +48,7 @@ const Wrapper = ({ mode }: WrapperPropsType) => {
   };
 
   useEffect(() => {
-    dispatch(getMeTC(username));
+    username && dispatch(getMeTC(username));
   }, [dispatch, username]);
 
   useEffect(() => {
