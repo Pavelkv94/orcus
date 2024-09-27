@@ -96,9 +96,9 @@ const Admin = React.memo(() => {
   const editPost = (id: string) => {
     setEditMode(true);
     dispatch(getPostTC(id));
-    setTitle(post.title);
-    setDropValue(post.category);
-    setText(post.text);
+    setTitle(post?.title);
+    setDropValue(post?.category);
+    setText(post?.text);
   };
 
   const deletePostModal = (id: string, title: string) => {
@@ -231,7 +231,7 @@ const Admin = React.memo(() => {
       {allPosts && (
         <Collapse>
           {categories.map((cat) => (
-            <Panel header={cat.title} key={cat._id}>
+            <Panel header={cat?.title} key={cat._id}>
               {posts.map(
                 (post) =>
                   post.category === cat.title && (
@@ -260,7 +260,7 @@ const Admin = React.memo(() => {
           ))}
         </Collapse>
       )}
-      <CloseModal visible={visible} setVisible={setVisible} callback={deletePost} title={tempId!.title} />
+      {visible && <CloseModal visible={visible} setVisible={setVisible} callback={deletePost} title={tempId!.title} />}
     </div>
   );
 });
