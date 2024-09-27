@@ -5,8 +5,7 @@ const expandHeaders = async () => ({
   Authorization: `Bearer ${localStorage.getItem("token")}`,
 });
 
-const baseUrl = (url: string) => `http://localhost:5000${url}`;
-// const baseUrl = (url: string) => `https://orcus-server.onrender.com${url}`;
+const baseUrl = (url: string) => `${import.meta.env.VITE_SERVER_URL}${url}`;
 
 const axiosInstance = axios.create(); // Create an Axios instance
 
