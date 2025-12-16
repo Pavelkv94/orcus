@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '@/store/slices/authSlice';
 import { fetchCategories } from '@/store/slices/categoriesSlice';
-import { fetchPostsShort, setCurrentPost } from '@/store/slices/postsSlice';
+import { fetchPostsShort } from '@/store/slices/postsSlice';
 import { RootState } from '@/store';
 import { Button } from '@/components/ui/button';
 import {

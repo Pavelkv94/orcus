@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { categoriesApi } from '@/api/categories';
 import type { Category, CreateCategoryRequest } from '@/types';
 
